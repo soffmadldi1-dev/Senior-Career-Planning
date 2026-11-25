@@ -1,0 +1,11 @@
+# Vercel에는 사이트 파일(index.html, css, js, data)만 올립니다.
+# package.json 을 빼서 빌드·설치 없이 정적 파일로 바로 배포되게 합니다.
+reference/
+tests/
+test-results/
+node_modules/
+.github/
+package.json
+package-lock.json
+playwright.config.js
+README.md

@@ -33,9 +33,12 @@ npx serve .
 
 PR을 올리거나 `main`에 반영하면 `.github/workflows/tests.yml`이 Playwright 테스트를 자동으로 실행합니다.
 
-**Vercel**
-1. vercel.com → Add New → Project → 저장소 선택
-2. Framework Preset: `Other`, Build Command·Output Directory는 비워 둠 → Deploy
+**Vercel (Git 연결 자동 배포)**
+1. vercel.com에 GitHub 계정으로 로그인 → **Add New… → Project**
+2. `Senior-Career-Planning` 저장소 옆 **Import**
+3. Framework Preset은 `Other` 그대로, Build·Install·Output 설정은 건드리지 않고 **Deploy**
+   - `vercel.json`(보안·캐시 헤더)과 `.vercelignore`(사이트 파일만 업로드, 빌드 없음)가 이미 들어 있습니다.
+4. 이후 `main`에 반영될 때마다 자동 배포되고, PR마다 미리보기 주소가 생깁니다.
 
 ## 3. 테스트
 
