@@ -1,0 +1,41 @@
+[
+  {
+    "label": "50대 · 관광통역안내사(일본어)",
+    "sub": "해설·안내 희망",
+    "industry": "tourism",
+    "group": "mid",
+    "age": "50대 후반",
+    "region": "서울",
+    "fields": ["guide"],
+    "certs": ["관광통역안내사", "일본어"],
+    "customFields": [],
+    "customCerts": [],
+    "free": "궁궐이나 관광지에서 일본인 관광객을 안내하고 싶어요"
+  },
+  {
+    "label": "40대 경력보유여성 · 사무 경력",
+    "sub": "호텔·여행사 예약상담 희망",
+    "industry": "tourism",
+    "group": "women",
+    "age": "40대",
+    "region": "경기·인천",
+    "fields": ["cs", "hotel"],
+    "certs": ["콜센터·상담 경력", "엑셀", "한글·워드 문서 작성", "영어"],
+    "customFields": [],
+    "customCerts": ["보험사 사무 10년"],
+    "free": "아이 하원 전까지 일할 수 있는 예약 상담 일"
+  },
+  {
+    "label": "60대 · 시설관리 경력",
+    "sub": "호텔·관광지 시설·안전 희망",
+    "industry": "tourism",
+    "group": "senior",
+    "age": "65세 이상",
+    "region": "그 밖의 지역",
+    "fields": ["leisure", "hotel"],
+    "certs": ["시설·안전 경력", "시설관리·전기 경력", "소방안전관리자", "운전면허"],
+    "customFields": [],
+    "customCerts": [],
+    "free": "건강할 때 꾸준히 할 수 있는 시설 관리 일"
+  }
+]

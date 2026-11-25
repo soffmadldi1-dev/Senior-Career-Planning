@@ -1,0 +1,22 @@
+{
+  "serviceName": "다시, 일 길잡이",
+  "logoText": "길",
+  "version": "1.0",
+  "checkedAt": "2026-11-25",
+  "audience": "신중년·시니어·경력보유여성",
+  "defaultIndustry": "tourism",
+  "industries": [
+    { "id": "tourism", "name": "관광", "file": "industries/tourism.json" }
+  ],
+  "ageOptions": ["40대", "50대 초반", "50대 후반", "60~64세", "65세 이상"],
+  "olderAges": ["60~64세", "65세 이상"],
+  "seniorAges": ["65세 이상"],
+  "regionOptions": ["서울", "경기·인천", "그 밖의 지역"],
+  "badges": {
+    "gov": { "label": "정부", "desc": "중앙행정기관" },
+    "pub": { "label": "공공기관", "desc": "공공기관" },
+    "local": { "label": "지자체", "desc": "시·도·구" },
+    "assoc": { "label": "협회", "desc": "업계 협회(참고용)" }
+  },
+  "footerNote": "공고 내용과 사이트 메뉴는 바뀔 수 있습니다. 지원 전 반드시 원문 공고문을 확인하세요."
+}

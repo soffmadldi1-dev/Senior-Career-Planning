@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>다시, 일 길잡이</title>
+<meta name="description" content="신중년·시니어·경력보유여성이 관심 분야와 자격·경험을 고르면, 채용공고에 실제로 쓰이는 맞춤 검색어와 채용공고·교육·상담·로드맵을 안내합니다.">
+<meta name="theme-color" content="#14213d">
+<meta property="og:type" content="website">
+<meta property="og:title" content="다시, 일 길잡이">
+<meta property="og:description" content="관심 분야와 경력만 고르면, 공고 찾는 검색어부터 다음 계단까지 안내합니다.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231a4fd8'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%EA%B8%B8%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="css/style.css">
+<script type="module" src="js/main.js"></script>
+</head>
+<body>
+<a class="skip" href="#form">입력 화면으로 바로가기</a>
+
+<header>
+  <div class="wrap bar">
+    <div class="brand">
+      <div class="logo" id="logo" aria-hidden="true">길</div>
+      <div><b id="brandName">다시, 일 길잡이</b><span id="tagline"></span></div>
+    </div>
+    <button type="button" class="hbtn" id="fsBtn" aria-pressed="false">가 큰 글씨로 보기</button>
+  </div>
+  <div class="wrap hero">
+    <span class="scope" id="scope"></span>
+    <h1 id="heroTitle"></h1>
+    <p id="heroDesc"></p>
+  </div>
+</header>
+
+<noscript><div class="wrap"><p class="loadstate error">이 도구는 자바스크립트가 켜져 있어야 동작합니다. 브라우저 설정에서 자바스크립트를 켠 뒤 새로고침해 주세요.</p></div></noscript>
+<div class="wrap"><div class="loadstate" id="loadState" role="status">정보를 불러오는 중입니다…</div></div>
+
+<main class="wrap" id="app" hidden>
+  <!-- 작동 방식 -->
+  <section class="how" aria-label="이 도구가 하는 일">
+    <div class="hw"><span class="n" aria-hidden="true">1</span><b>관심 분야·자격·경험 선택</b><p>목록에 없으면 직접 적으면 됩니다</p></div>
+    <div class="hw key"><span class="n" aria-hidden="true">2</span><b>맞춤 검색어 만들기</b><p>공고에 실제로 쓰이는 직무 이름으로 바꿔 드립니다</p></div>
+    <div class="hw"><span class="n" aria-hidden="true">3</span><b>검색어로 4가지 안내</b><p>채용공고 · 교육·자격 · 상담·커뮤니티 · 로드맵</p></div>
+    <div class="hw"><span class="n" aria-hidden="true">4</span><b>AI에게 이어서 묻기</b><p>내 정보가 담긴 질문문을 복사해 AI에 붙여넣기</p></div>
+  </section>
+  <p class="howcap" id="searchTip"></p>
+
+  <section class="card" id="form" aria-labelledby="formTitle">
+    <h2 id="formTitle" tabindex="-1">1. 나에 대해 알려주세요</h2>
+    <p class="sub">나이대에 따라 받을 수 있는 지원 제도와 응시 가능 공고가 달라집니다.</p>
+    <div class="q">
+      <span class="ql" id="groupLabel">나는 어디에 해당하나요?</span>
+      <div class="chips" id="groupBox" role="group" aria-labelledby="groupLabel"></div>
+    </div>
+    <div class="row q">
+      <div><label class="ql" for="age">나이 <span class="hint">(응시 연령 확인용)</span></label>
+        <select id="age"></select></div>
+      <div><label class="ql" for="region">사는 곳</label>
+        <select id="region"></select></div>
+    </div>
+    <p class="agehint" id="ageHint" role="status" hidden></p>
+
+    <h2 id="fieldTitle">2. 관심 있는 분야</h2>
+    <p class="sub">여러 개를 골라도 됩니다. 분야를 고르면 아래 3번의 자격·경험 목록이 그 분야에 맞게 바뀝니다.</p>
+    <div class="q">
+      <div class="industry" id="industryBox" hidden>
+        <span class="ql" id="industryLabel">산업 고르기</span>
+        <div class="chips" id="industryChips" role="group" aria-labelledby="industryLabel"></div>
+      </div>
+      <div class="fgrid" id="fieldBox" role="group" aria-labelledby="fieldTitle"></div>
+      <div class="addrow"><input type="text" id="fieldIn" aria-label="관심 분야 직접 입력" autocomplete="off"><button type="button" class="addbtn" data-add="field">추가</button></div>
+      <div class="chips customchips" id="fieldCustom"></div>
+      <p class="basis" id="fieldBasis"></p>
+    </div>
+
+    <h2>3. 가지고 있는 자격·경험</h2>
+    <p class="sub">자격증이 없어도 괜찮습니다. 지난 일 경험도 공고에서 중요한 조건입니다.</p>
+    <div class="q">
+      <div id="certBox"></div>
+      <div id="customWrap" class="catpanel" hidden><h5>직접 기입</h5>
+        <div class="addrow addrow-tight"><input type="text" id="certIn" aria-label="자격·경험 직접 입력" autocomplete="off"><button type="button" class="addbtn" data-add="cert">추가</button></div>
+        <div class="chips customchips" id="certCustom"></div></div>
+      <p class="basis" id="certBasis"></p>
+    </div>
+
+    <div class="q">
+      <label class="ql" for="free">한 줄로 적는 나의 희망 <span class="hint">(선택)</span></label>
+      <input type="text" id="free" maxlength="100" autocomplete="off">
+    </div>
+    <p class="selsum" id="selSummary"></p>
+    <div class="actions">
+      <button type="button" class="btn primary" id="runBtn">맞춤 안내 받기</button>
+      <button type="button" class="btn ghost" id="resetBtn">처음부터 다시</button>
+    </div>
+    <p id="formMsg" class="formmsg" role="status" aria-live="polite"></p>
+    <details class="demo" id="demoBox">
+      <summary>입력이 막막하다면? 예시 인물의 결과 미리 보기</summary>
+      <p>실제 상담 사례를 바탕으로 만든 예시입니다. 누르면 위 입력칸과 결과가 함께 채워지고, [처음부터 다시]로 지울 수 있습니다.</p>
+      <div class="chips" id="demos"></div>
+    </details>
+  </section>
+
+  <section class="card" id="result" aria-labelledby="rTitle" hidden>
+    <div class="rhead">
+      <h2 id="rTitle" tabindex="-1">맞춤 안내 결과</h2>
+      <button type="button" class="btn ghost small" id="editBtn">입력 고치기</button>
+    </div>
+    <p class="sub" id="rSub"></p>
+    <div class="tags" id="rTags"></div>
+
+    <div class="kwbox">
+      <h3>나의 맞춤 검색어</h3>
+      <p class="sub">고르신 분야와 자격·경험으로 만든 단어입니다. <b>채용 사이트 검색창에 이 단어를 그대로 넣으면</b> 공고가 훨씬 잘 나옵니다. 아래 모든 안내도 이 검색어를 기준으로 연결됩니다.</p>
+      <div class="kwsec"><h4>① 직무 이름 — 공고 제목에 실제로 쓰이는 말</h4><div class="kwlist" id="kwJob"></div></div>
+      <div class="kwsec"><h4>② 조건 단어 — 직무 이름 뒤에 붙이면 나에게 맞는 공고만 걸러집니다</h4><div class="kwlist" id="kwMod"></div></div>
+      <div class="kwsec"><h4>③ 바로 쓰는 추천 조합</h4><div class="kwlist" id="kwCombo"></div></div>
+      <div class="howuse">
+        <div><b>1. [복사] 누르기</b><br>단어가 휴대폰·컴퓨터에 임시 저장됩니다.</div>
+        <div><b>2. 사이트 검색창 누르기</b><br>아래 '채용공고' 탭의 사이트로 이동합니다.</div>
+        <div><b>3. 붙여넣기</b><br>휴대폰은 검색창을 길게 눌러 '붙여넣기'를 누르세요.</div>
+      </div>
+    </div>
+
+    <div class="guidehead">
+      <h3>이 검색어로 정리한 5가지 맞춤 안내</h3>
+      <p>위 검색어를 기준으로 <b>어디서 찾고(①), 무엇을 배우고(②), 누구에게 도움을 받고(③), 어떤 순서로 나아갈지(④)</b> 정리했습니다. 막히는 부분은 <b>AI에게 이어서 물어볼 수 있습니다(⑤)</b>. ①부터 차례로 눌러 보세요.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="5가지 맞춤 안내">
+      <button type="button" class="tab" role="tab" id="tab-p1" data-p="p1" aria-controls="p1" aria-selected="true"><b>① 채용공고</b><small>어디서 검색할지</small></button>
+      <button type="button" class="tab" role="tab" id="tab-p2" data-p="p2" aria-controls="p2" aria-selected="false" tabindex="-1"><b>② 교육·자격</b><small>무료·국비 교육</small></button>
+      <button type="button" class="tab" role="tab" id="tab-p3" data-p="p3" aria-controls="p3" aria-selected="false" tabindex="-1"><b>③ 상담·커뮤니티</b><small>무료 1:1 상담기관</small></button>
+      <button type="button" class="tab" role="tab" id="tab-p4" data-p="p4" aria-controls="p4" aria-selected="false" tabindex="-1"><b>④ 나의 로드맵</b><small>1년 계획·이번 주 할 일</small></button>
+      <button type="button" class="tab" role="tab" id="tab-p5" data-p="p5" aria-controls="p5" aria-selected="false" tabindex="-1"><b>⑤ AI에게 물어보기</b><small>복사해서 쓰는 질문문</small></button>
+    </div>
+
+    <div class="panel" id="p1" role="tabpanel" aria-labelledby="tab-p1" tabindex="0">
+      <div class="explain"><b>위에서부터 중요한 순서입니다.</b> 칸마다 <b>"이 검색어로 찾기"</b>에 적힌 단어를 넣어 보세요. 마감이 1~2주로 짧은 공고가 많으니 <b>매주 같은 요일</b>에 확인하는 습관이 가장 효과적입니다.</div>
+      <div class="list" id="jobBox"></div>
+      <div id="warnBox"></div>
+    </div>
+    <div class="panel" id="p2" role="tabpanel" aria-labelledby="tab-p2" tabindex="0" hidden>
+      <div class="explain"><b>교육은 자격증을 더 따기보다 지원서에 쓸 경험을 만드는 데 목적이 있습니다.</b> 무료·국비 지원 과정을 먼저 보세요.</div>
+      <div class="list" id="eduBox"></div>
+    </div>
+    <div class="panel" id="p3" role="tabpanel" aria-labelledby="tab-p3" tabindex="0" hidden>
+      <div class="explain"><b>혼자 찾지 마세요.</b> 아래 기관은 무료로 1:1 상담을 해 줍니다. 위 검색어를 상담사에게 보여 주면 공고 추천이 빨라집니다.</div>
+      <div class="list" id="comBox"></div>
+    </div>
+    <div class="panel" id="p4" role="tabpanel" aria-labelledby="tab-p4" tabindex="0" hidden>
+      <div class="explain"><b>원하는 자리에 한 번에 가기 어렵다면 계단을 만드세요.</b> 가까운 일부터 시작해 경력을 쌓고, 원하는 일로 옮겨 가는 순서입니다.</div>
+      <div class="road" id="roadBox"></div>
+      <h3 class="sec">가진 자격·경험으로 갈 수 있는 길</h3>
+      <div class="paths" id="pathBox"></div>
+      <h3 class="sec">이번 주에 할 일 체크리스트</h3>
+      <p class="sub todosub">하루 10~30분이면 됩니다. 끝낸 일은 체크하세요. "다 했다"의 기준도 함께 적어 두었습니다.</p>
+      <p class="progress" id="todoProgress" role="status"></p>
+      <ul class="todo" id="todoBox"></ul>
+    </div>
+    <div class="panel" id="p5" role="tabpanel" aria-labelledby="tab-p5" tabindex="0" hidden>
+      <div class="explain"><b>내 정보가 미리 담긴 질문문입니다.</b> [질문 복사]를 누른 뒤 ChatGPT·Claude·네이버 클로바X 같은 AI 대화창에 붙여넣으면, 공고 해석·이력서 문장·면접 연습을 이어서 도와줍니다.<br><span class="ainotice" id="aiNotice"></span></div>
+      <div id="promptBox"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap" id="footer"></footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
