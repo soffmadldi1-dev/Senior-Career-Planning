@@ -1,0 +1,35 @@
+# PR과 main 푸시 때 Playwright 테스트를 자동으로 돌립니다.
+name: 테스트
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  playwright:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: 패키지 설치
+        run: npm ci
+      - name: 브라우저 설치
+        run: npx playwright install --with-deps chromium
+      - name: 테스트 실행
+        run: npx playwright test
+      - name: 실패 시 스크린샷 보관
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            test-results/
+            tests/screenshots/
+          retention-days: 7

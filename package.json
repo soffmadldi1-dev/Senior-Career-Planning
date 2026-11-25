@@ -1,0 +1,15 @@
+{
+  "name": "dasi-il-gilsapi",
+  "version": "1.0.0",
+  "private": true,
+  "description": "다시, 일 길잡이 — 신중년·시니어·경력보유여성 맞춤 검색어·일자리 안내 (정적 웹)",
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "test": "playwright test",
+    "check-links": "node tests/check-links.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
+  }
+}
