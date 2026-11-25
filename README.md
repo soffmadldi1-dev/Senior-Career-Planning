@@ -26,10 +26,12 @@ npx serve .
 
 빌드 과정이 없으므로 폴더를 그대로 올리면 됩니다. `reference/`, `tests/`, `node_modules/`는 배포에 필요 없습니다.
 
-**GitHub Pages**
-1. 저장소 → Settings → Pages
-2. Source: `Deploy from a branch`, Branch: `main` / `/ (root)` 선택 → Save
-3. 1~2분 뒤 표시되는 주소로 접속
+**GitHub Pages (자동 배포 설정됨)**
+1. 처음 한 번만: 저장소 → Settings → Pages → Build and deployment → Source를 **GitHub Actions**로 선택
+2. 이후 `main`에 반영될 때마다 `.github/workflows/pages.yml`이 배포용 파일(`index.html`, `css`, `js`, `data`)만 모아 자동 배포
+3. 주소: `https://soffmadldi1-dev.github.io/Senior-Career-Planning/` (Actions 탭에서 진행 상황 확인)
+
+PR을 올리거나 `main`에 반영하면 `.github/workflows/tests.yml`이 Playwright 테스트를 자동으로 실행합니다.
 
 **Vercel**
 1. vercel.com → Add New → Project → 저장소 선택
