@@ -118,7 +118,7 @@ test('결과 5개 탭: 클릭·키보드 이동과 탭별 내용', async ({ page
   await expect(tabs.nth(0)).toHaveAttribute('aria-selected', 'true');
   await expect(page.locator('#p1')).toBeVisible();
   // ① 채용공고: 분야 sites 순서, 검색 순서 3단계, 분야 주의 박스
-  await expect(page.locator('#jobBox .item h3')).toHaveText(['나라일터', '시·군·구청 · 지역 관광공사 누리집', '관광인 (관광전문인력포털)', '고용24']);
+  await expect(page.locator('#jobBox .item h3')).toHaveText(['나라일터', '궁능유적본부 누리집', '시·군·구청 · 지역 관광공사 누리집', '관광인 (관광전문인력포털)', '고용24']);
   await expect(page.locator('#jobBox .item').first().locator('ol li')).toHaveCount(3);
   await expect(page.locator('#warnBox .warn')).toContainText('만 60세 미만');
 
@@ -161,7 +161,7 @@ test('④ 로드맵: 3단계·갈 수 있는 길·이번 주 할 일 7개(그룹
   const todo = page.locator('#todoBox li');
   await expect(todo).toHaveCount(7);
   await expect(todo.nth(3)).toContainText('노인일자리 여기 지역 공고 확인');
-  await expect(todo.nth(5)).toContainText('나라일터에 공공 시설 공고 확인');
+  await expect(todo.nth(5)).toContainText('궁·국가유산 시설 공고 확인');
   await expect(todo.nth(1)).toContainText('"시설물관리원 시니어"');
   await expect(page.locator('#todoProgress')).toHaveText('7개 중 0개 완료');
   await todo.nth(0).locator('label').click();
@@ -268,4 +268,60 @@ test('alert·confirm을 쓰지 않는다', async ({ page }) => {
   await runDemo(page, 2);
   await page.locator('#resetBtn').click();
   expect(dialogs).toBe(0);
+});
+
+test('[개선②] 결과 맨 위 "지금 바로 할 일": 추천 조합 1순위 + 첫 사이트 바로 열기', async ({ page }) => {
+  await runDemo(page, 1);
+  await expect(page.locator('#nsKw .kw > span')).toHaveText('예약 상담원 영어 가능');
+  const go = page.locator('#nsSite a');
+  await expect(go).toHaveText('고용24 열기 ↗');
+  await expect(go).toHaveAttribute('href', 'https://www.work24.go.kr');
+  await expect(go).toHaveAttribute('target', '_blank');
+  // 검색어 박스보다 먼저 보인다
+  const [ns, kw] = await Promise.all([page.locator('.nextstep').boundingBox(), page.locator('.kwbox').boundingBox()]);
+  expect(ns.y).toBeLessThan(kw.y);
+});
+
+test('[개선①] 요약 복사: 카톡에 붙여넣을 요약, 자유 입력·직접 기입은 빠진다', async ({ page, context }) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  await runDemo(page, 1);
+  await page.locator('#sumBtn').click();
+  await expect(page.locator('#toast')).toContainText('요약을 복사했습니다');
+  const text = await page.evaluate(() => navigator.clipboard.readText());
+  expect(text).toMatch(/^\[다시, 일 길잡이\] 나의 맞춤 안내 \(\d{4}\.\d{2}\.\d{2}\)/);
+  expect(text).toContain('대상: 경력보유여성 · 40대 · 경기·인천');
+  expect(text).toContain('- 예약 상담원 영어 가능');
+  expect(text).toContain('여성새로일하기센터 (새일센터) ☎ 1544-1199');
+  expect(text).toContain('■ 이번 주 할 일');
+  expect(text).toContain('다시 보기: http');
+  expect(text).not.toContain('아이 하원'); // 한 줄 희망(자유 입력) 제외
+  expect(text).not.toContain('보험사 사무'); // 직접 기입 제외
+});
+
+test('[개선①] 인쇄·PDF: 입력 화면은 숨기고 5개 안내 중 4개를 모두 펼친다', async ({ page }) => {
+  await runDemo(page, 0);
+  await page.emulateMedia({ media: 'print' });
+  await expect(page.locator('#form')).toBeHidden();
+  await expect(page.locator('.tabs')).toBeHidden();
+  for (const id of ['p1', 'p2', 'p3', 'p4']) await expect(page.locator(`#${id}`)).toBeVisible();
+  await expect(page.locator('#p5')).toBeHidden();
+  await expect(page.locator('.nextstep')).toBeVisible();
+  await page.emulateMedia({ media: 'screen' });
+  await expect(page.locator('#p2')).toBeHidden();
+});
+
+test('[개선①] 공유 미리보기(OG) 태그와 이미지', async ({ page, request }) => {
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /\/assets\/og\.png$/);
+  const res = await request.get('/assets/og.png');
+  expect(res.status()).toBe(200);
+  expect(res.headers()['content-type']).toContain('image/png');
+});
+
+test('[개선③] 확인한 정보 반영: 국외여행인솔자 요건, 궁능유적본부 누리집', async ({ page }) => {
+  await page.locator('#fieldBox [data-f="travel"]').click();
+  await page.locator('#fieldBox [data-f="leisure"]').click();
+  await page.locator('#runBtn').click();
+  await expect(page.locator('#jobBox')).toContainText('궁능유적본부 누리집');
+  await page.locator('#tab-p2').click();
+  await expect(page.locator('#eduBox')).toContainText('관광진흥법 시행규칙 제22조');
 });

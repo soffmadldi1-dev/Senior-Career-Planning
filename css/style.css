@@ -257,6 +257,23 @@ footer { padding: 26px 20px 40px; color: var(--muted); font-size: .8rem; }
 }
 .toast.on { opacity: 1; }
 
+/* ---------- 결과 남겨 두기 · 지금 바로 할 일 ---------- */
+.keepbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 14px 0 0; padding: 10px 12px; background: var(--bg); border-radius: 12px; }
+.keeplabel { font-size: .86rem; font-weight: 700; color: var(--ink2); margin-right: auto; }
+.keephint { font-weight: 400; color: var(--muted); font-size: .8rem; }
+.nextstep { margin: 16px 0 0; padding: 18px 20px; border-radius: var(--r); background: var(--ink); color: #fff; }
+.nextstep h3 { margin: 0 0 10px; font-size: 1.12rem; }
+.nsmin { display: inline-block; margin-left: 6px; font-size: .78rem; font-weight: 700; color: var(--ink); background: var(--focus); border-radius: 999px; padding: 1px 10px; vertical-align: 2px; }
+.nextstep ol { margin: 0; padding-left: 1.4em; display: grid; gap: 12px; }
+.nextstep li { padding-left: 2px; }
+.nextstep li::marker { font-weight: 800; color: #ffd27a; }
+.nextstep li > b { display: block; margin-bottom: 6px; }
+.nextstep .kw { border-color: #fff; }
+.nsnext { display: block; font-size: .86rem; color: #d3dbea; }
+.nsgo { justify-content: flex-start; }
+.go.primary { background: var(--focus); border-color: var(--focus); color: var(--ink); font-size: .95rem; padding: 8px 16px; }
+.nextstep :focus-visible { outline-color: #fff; }
+
 /* ---------- 반응형 ---------- */
 @media (max-width: 820px) {
   .tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -284,4 +301,29 @@ footer { padding: 26px 20px 40px; color: var(--muted); font-size: .8rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+
+/* ---------- 인쇄·PDF 저장: 결과만, 5개 안내를 모두 펼쳐서 ---------- */
+@media print {
+  @page { margin: 14mm 12mm; }
+  html, html.big { font-size: 10.5pt; }
+  body { background: #fff; }
+  header, .skip, .loadstate, .how, .howcap, #form, .keepbar, .rhead button, .tabs, .guidehead, .howuse,
+  .explain, .cp, .cpbig, .toast, .todosub, .progress, noscript { display: none !important; }
+  .wrap { max-width: none; padding: 0; }
+  .card { border: 0; padding: 0; margin: 0; }
+  #result .panel[hidden] { display: block !important; }
+  #result #p5.panel { display: none !important; } /* AI 질문문은 종이에 필요 없음 */
+  .panel > :first-child, .panel::before { break-after: avoid; }
+  .panel::before { content: attr(data-title); display: block; font-size: 1.15rem; font-weight: 800; margin: 18px 0 8px; padding-top: 8px; border-top: 2px solid var(--ink); }
+  .nextstep { background: #fff; color: var(--ink); border: 2px solid var(--ink); }
+  .nsnext { color: var(--ink2); }
+  .nsmin { border: 1px solid var(--ink); background: #fff; }
+  .go.primary, .go { background: #fff; border: 0; padding: 0; min-height: 0; color: var(--ink); }
+  a.go[href^="http"]::after { content: " " attr(href); font-weight: 400; color: var(--ink2); }
+  .go.off { display: none; }
+  .kw { border: 1px solid var(--line-strong); padding: 2px 10px; }
+  .item, .stage, .path, .todo li, .warn, .nextstep, .kwsec { break-inside: avoid; }
+  .tag, .badge { border: 1px solid var(--line-strong); }
+  footer { padding: 12px 0 0; }
 }
