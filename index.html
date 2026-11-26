@@ -9,6 +9,13 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="다시, 일 길잡이">
 <meta property="og:description" content="관심 분야와 경력만 고르면, 공고 찾는 검색어부터 다음 계단까지 안내합니다.">
+<meta property="og:url" content="https://seniorcareer.vercel.app/">
+<meta property="og:image" content="https://seniorcareer.vercel.app/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://seniorcareer.vercel.app/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231a4fd8'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%EA%B8%B8%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="css/style.css">
@@ -108,6 +115,21 @@
     <p class="sub" id="rSub"></p>
     <div class="tags" id="rTags"></div>
 
+    <div class="keepbar" role="group" aria-label="이 결과 남겨 두기">
+      <span class="keeplabel">이 결과 남겨 두기</span>
+      <button type="button" class="btn ghost small" id="sumBtn">요약 복사 <span class="keephint">카톡에 붙여넣기</span></button>
+      <button type="button" class="btn ghost small" id="printBtn">인쇄·PDF 저장</button>
+    </div>
+
+    <section class="nextstep" aria-labelledby="nsTitle">
+      <h3 id="nsTitle"><span class="nw">지금 바로 할 일</span> <span class="nsmin">5분이면 됩니다</span></h3>
+      <ol>
+        <li><b>이 검색어를 복사하세요</b><div class="kwlist" id="nsKw"></div></li>
+        <li><b>사이트를 열고 검색창에 붙여넣으세요</b><div class="golinks nsgo" id="nsSite"></div></li>
+        <li><b>마음에 드는 공고 3개를 저장하세요</b><span class="nsnext">그다음 할 일은 아래 ④ 나의 로드맵에 정리해 두었습니다.</span></li>
+      </ol>
+    </section>
+
     <div class="kwbox">
       <h3>나의 맞춤 검색어</h3>
       <p class="sub">고르신 분야와 자격·경험으로 만든 단어입니다. <b>채용 사이트 검색창에 이 단어를 그대로 넣으면</b> 공고가 훨씬 잘 나옵니다. 아래 모든 안내도 이 검색어를 기준으로 연결됩니다.</p>
@@ -133,20 +155,20 @@
       <button type="button" class="tab" role="tab" id="tab-p5" data-p="p5" aria-controls="p5" aria-selected="false" tabindex="-1"><b>⑤ AI에게 물어보기</b><small>복사해서 쓰는 질문문</small></button>
     </div>
 
-    <div class="panel" id="p1" role="tabpanel" aria-labelledby="tab-p1" tabindex="0">
+    <div class="panel" id="p1" data-title="① 채용공고 — 어디서 검색할지" role="tabpanel" aria-labelledby="tab-p1" tabindex="0">
       <div class="explain"><b>위에서부터 중요한 순서입니다.</b> 칸마다 <b>"이 검색어로 찾기"</b>에 적힌 단어를 넣어 보세요. 마감이 1~2주로 짧은 공고가 많으니 <b>매주 같은 요일</b>에 확인하는 습관이 가장 효과적입니다.</div>
       <div class="list" id="jobBox"></div>
       <div id="warnBox"></div>
     </div>
-    <div class="panel" id="p2" role="tabpanel" aria-labelledby="tab-p2" tabindex="0" hidden>
+    <div class="panel" id="p2" data-title="② 교육·자격" role="tabpanel" aria-labelledby="tab-p2" tabindex="0" hidden>
       <div class="explain"><b>교육은 자격증을 더 따기보다 지원서에 쓸 경험을 만드는 데 목적이 있습니다.</b> 무료·국비 지원 과정을 먼저 보세요.</div>
       <div class="list" id="eduBox"></div>
     </div>
-    <div class="panel" id="p3" role="tabpanel" aria-labelledby="tab-p3" tabindex="0" hidden>
+    <div class="panel" id="p3" data-title="③ 상담·커뮤니티" role="tabpanel" aria-labelledby="tab-p3" tabindex="0" hidden>
       <div class="explain"><b>혼자 찾지 마세요.</b> 아래 기관은 무료로 1:1 상담을 해 줍니다. 위 검색어를 상담사에게 보여 주면 공고 추천이 빨라집니다.</div>
       <div class="list" id="comBox"></div>
     </div>
-    <div class="panel" id="p4" role="tabpanel" aria-labelledby="tab-p4" tabindex="0" hidden>
+    <div class="panel" id="p4" data-title="④ 나의 로드맵" role="tabpanel" aria-labelledby="tab-p4" tabindex="0" hidden>
       <div class="explain"><b>원하는 자리에 한 번에 가기 어렵다면 계단을 만드세요.</b> 가까운 일부터 시작해 경력을 쌓고, 원하는 일로 옮겨 가는 순서입니다.</div>
       <div class="road" id="roadBox"></div>
       <h3 class="sec">가진 자격·경험으로 갈 수 있는 길</h3>
@@ -156,7 +178,7 @@
       <p class="progress" id="todoProgress" role="status"></p>
       <ul class="todo" id="todoBox"></ul>
     </div>
-    <div class="panel" id="p5" role="tabpanel" aria-labelledby="tab-p5" tabindex="0" hidden>
+    <div class="panel" id="p5" data-title="⑤ AI에게 물어보기" role="tabpanel" aria-labelledby="tab-p5" tabindex="0" hidden>
       <div class="explain"><b>내 정보가 미리 담긴 질문문입니다.</b> [질문 복사]를 누른 뒤 ChatGPT·Claude·네이버 클로바X 같은 AI 대화창에 붙여넣으면, 공고 해석·이력서 문장·면접 연습을 이어서 도와줍니다.<br><span class="ainotice" id="aiNotice"></span></div>
       <div id="promptBox"></div>
     </div>

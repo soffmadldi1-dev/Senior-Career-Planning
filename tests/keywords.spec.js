@@ -1,6 +1,7 @@
 // 4. 검색어 규칙 단위 테스트 — 명세 6-3의 예시 3명 기준값
 import { test, expect } from '@playwright/test';
 import { buildKeywords, fieldJobs } from '../js/keywords.js';
+import { buildSummary } from '../js/summary.js';
 import { readJSON } from './helpers.js';
 
 const data = {
@@ -64,4 +65,26 @@ test.describe('keywords.js 맞춤 검색어 규칙', () => {
     expect(fieldJobs(hotel, ['경비·보안 경력'])[0]).toBe('호텔 보안');
     expect(fieldJobs(hotel, [])[0]).toBe('하우스키핑');
   });
+});
+
+test('summary.js: 요약 구성과 순서', () => {
+  const K = buildKeywords(input(demos[0]), data);
+  const t = buildSummary({
+    serviceName: '다시, 일 길잡이',
+    date: '2026.11.26',
+    url: 'https://seniorcareer.vercel.app/',
+    who: ['신중년', '50대 후반', '서울'],
+    fieldNames: ['관광안내·해설'],
+    keywords: K,
+    sites: [{ name: '나라일터', url: 'https://www.gojobs.go.kr' }, { name: '시·군·구청', url: '' }],
+    consult: [{ name: '새일센터', phone: '1544-1199' }],
+    tasks: [{ title: '고용24 가입' }],
+  });
+  const lines = t.split('\n');
+  expect(lines[0]).toBe('[다시, 일 길잡이] 나의 맞춤 안내 (2026.11.26)');
+  expect(t).toContain('- 관광통역안내사 일본어 가능');
+  expect(t).toContain('- 나라일터 https://www.gojobs.go.kr');
+  expect(t).toContain('- 시·군·구청\n');
+  expect(t).toContain('- 새일센터 ☎ 1544-1199');
+  expect(lines.at(-1)).toBe('다시 보기: https://seniorcareer.vercel.app/');
 });

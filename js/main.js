@@ -1,12 +1,10 @@
 // 시작: 데이터 불러오기 → 화면 그리기 → 이벤트 연결
 //
-// TODO [확인 필요] 아래 항목은 데이터의 "todo" 칸에도 적어 두었습니다. 확인 후 데이터만 고치면 됩니다.
-//  - 프로마이스(promice.or.kr) 사이트 성격·메뉴 이름            → data/sites.json  promice
-//  - 국외여행인솔자 자격 요건과 담당 기관                        → data/industries/tourism.json  travel
-//  - 궁능유적본부 누리집의 채용 게시판 메뉴 이름                 → data/sites.json  narail
-//  - 고용24 "전직지원서비스(중장년내일센터)" 신청 메뉴 경로      → data/groups.json  mid.weeklyConsult
-//  - 관광일자리센터 위치·상담 신청 메뉴 이름                     → data/industries/tourism.json  consultCenters
-//  - 모든 외부 링크의 실제 접속 여부                             → node tests/check-links.mjs
+// TODO [확인 필요] (2026-11-26 기준 남은 항목 — README 6번 참고)
+//  - 관광안내·해설 경고문의 "2026 종묘관리소 공고, 만 60세 미만" 사례 원문 → data/industries/tourism.json  guide.warning
+//  - 국외여행인솔자 등록·교육 위탁 기관 이름                         → data/industries/tourism.json  travel.edu
+//  - 궁능유적본부 채용 게시판 정확한 메뉴 이름                        → data/sites.json  royal
+//  - 모든 외부 링크의 실제 접속 여부                                  → node tests/check-links.mjs
 import { setFormContext, renderFormStatic, drawAll, initForm, clearForm, showFormMessage } from './form.js';
 import { renderResult, hideResult, initResult, scrollBehavior } from './result.js';
 import { state, resetState } from './state.js';

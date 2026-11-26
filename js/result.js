@@ -2,6 +2,7 @@
 import { state } from './state.js';
 import { buildKeywords, fieldJobs } from './keywords.js';
 import { buildPrompts } from './prompts.js';
+import { buildSummary } from './summary.js';
 import { h, rich, replaceChildren, uniq, fill, copyText } from './utils.js';
 
 const $ = (s) => document.querySelector(s);
@@ -9,6 +10,7 @@ const FIT = { high: { cls: 'h', label: '바로 지원 가능' }, mid: { cls: 'm'
 const TAB_IDS = ['p1', 'p2', 'p3', 'p4', 'p5'];
 
 let promptTexts = [];
+let summaryText = '';
 
 const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 export const scrollBehavior = () => (reduceMotion() ? 'auto' : 'smooth');
@@ -97,8 +99,18 @@ export function renderResult(ctx) {
   replaceChildren($('#kwCombo'), K.combo.map((k) => kwChip(k, 'combo')));
 
   /* ① 채용공고 */
-  const siteIds = uniq(fs.flatMap((f) => f.sites || []));
+  const siteIds = uniq(fs.flatMap((f) => f.sites || [])).filter((id) => sites[id]);
   if (!siteIds.length) siteIds.push(...(industry.defaultSites || ['work24']));
+
+  /* 지금 바로 할 일: 추천 조합 1순위 + 가장 중요한 사이트 1곳 */
+  const firstSite = siteIds.map((id) => sites[id]).find((s) => s && s.url);
+  replaceChildren($('#nsKw'), kwChip(vars.combo0, 'combo'));
+  replaceChildren(
+    $('#nsSite'),
+    firstSite
+      ? h('a', { class: 'go primary', href: firstSite.url, target: '_blank', rel: 'noopener noreferrer', 'aria-label': `${firstSite.name} 열기 (새 창)` }, `${firstSite.name} 열기 ↗`)
+      : null,
+  );
   replaceChildren(
     $('#jobBox'),
     siteIds
@@ -182,6 +194,19 @@ export function renderResult(ctx) {
   );
   updateTodoProgress();
 
+  /* 결과 요약(카톡·문자용) */
+  summaryText = buildSummary({
+    serviceName: meta.serviceName,
+    date: new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\.\s?/g, '.').replace(/\.$/, ''),
+    url: location.href.split('#')[0],
+    who: uniq([g?.label, state.age, state.region]),
+    fieldNames: names,
+    keywords: K,
+    sites: siteIds.map((id) => sites[id]),
+    consult: com,
+    tasks: tasks.map((t) => ({ title: fill(t.title, vars) })),
+  });
+
   /* ⑤ AI에게 물어보기 */
   const P = buildPrompts(ctx, state, K, names);
   promptTexts = P.map((p) => p.text);
@@ -212,7 +237,8 @@ export function renderResult(ctx) {
 export function hideResult() {
   $('#result').hidden = true;
   promptTexts = [];
-  ['#kwJob', '#kwMod', '#kwCombo', '#jobBox', '#warnBox', '#eduBox', '#comBox', '#roadBox', '#pathBox', '#todoBox', '#promptBox', '#rTags'].forEach((s) =>
+  summaryText = '';
+  ['#nsKw', '#nsSite', '#kwJob', '#kwMod', '#kwCombo', '#jobBox', '#warnBox', '#eduBox', '#comBox', '#roadBox', '#pathBox', '#todoBox', '#promptBox', '#rTags'].forEach((s) =>
     replaceChildren($(s)),
   );
   $('#rTitle').textContent = '맞춤 안내 결과';
@@ -260,6 +286,8 @@ export function initResult({ onEdit }) {
 
   $('#todoBox').addEventListener('change', updateTodoProgress);
   $('#editBtn').addEventListener('click', onEdit);
+  $('#sumBtn').addEventListener('click', () => copyText(summaryText, '요약을 복사했습니다 — 카톡 "나와의 채팅"에 붙여넣어 두세요'));
+  $('#printBtn').addEventListener('click', () => window.print());
 
   // 복사 버튼(검색어·질문문)
   document.addEventListener('click', (e) => {
